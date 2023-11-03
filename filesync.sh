@@ -37,14 +37,16 @@ if [ $? -eq 2 ];
        exit 0
 fi
 
-date >> log.txt
-rsync -vha --copy-links --delete --exclude unlock  "$1" "$2" >> log.txt
+log_file="crypto_sync_log.txt"
+
+echo "$(date)" >> $log_file
+rsync -vha --copy-links --delete --exclude unlock  "$1" "$2" >> $log_file
 
 if [ $? -eq 0 ];
    then
-       echo "Sync Completed Successfully"
+       echo "Sync Completed Successfully" >> $log_file
    else
-       echo "Sync Failed"
+       echo "Sync Failed" >> $log_file
 fi
 
 exit 0
