@@ -39,15 +39,19 @@ fi
 
 log_file="crypto_sync_log.txt"
 
+echo "---------------------------------------" >> $log_file
 echo "$(date)" >> $log_file
 rsync -vha --copy-links --delete --exclude unlock  "$1" "$2" >> $log_file
 
 if [ $? -eq 0 ];
    then
        echo "Sync Completed Successfully" >> $log_file
+       echo "Program completed successfully, please see logs for details"
+       exit 0
    else
        echo "Sync Failed" >> $log_file
+       echo "Program failed, please see logs for details"
+       zenity --warning --text="Overnight job failed, please see logs"
+       exit 1
 fi
-
-exit 0
 
