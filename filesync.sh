@@ -10,37 +10,46 @@
 # this script writing into a directory it should not. Use case is a cronjob that periodically writes into a directory,
 # but you want to suspend the write on the far end if you cant stop the cronjob at the source.
 
-# Check for the "unlock" file
+log_file="crypto_sync_log.txt"
+
+echo "---------------------------------------" >> $log_file
+echo "$(date)" >> $log_file
+
+
+# Check for "rsync"
 
 rsync --help > /dev/null 2>&1
 
 if [ $? -eq 127 ];
    then
+       echo "rsync is missing, aborting." >> $log_file
        echo "The rsync program is required to use this script."
        exit 0
 fi
+
+# Check for "zenity"
 
 zenity --help > /dev/null 2>&1
 
 if [ $? -eq 127 ];
    then
+       echo "zenity is missing, aborting." >> $log_file
        echo "The zenity program is required to use this script."
        exit 0
 fi
 
+# Check for the "unlock" file on the far end
 
 ls "$2unlock" > /dev/null 2>&1
 
 if [ $? -eq 2 ];
    then
+       echo "unlock file not detected at far end. Folder may need encryption key or unlock file has been explictly removed to prevent writes."
        zenity --warning --text="unlock file not detected at far end. Folder may need encryption key or unlock file has been explictly removed to prevent writes."
        exit 0
 fi
 
-log_file="crypto_sync_log.txt"
 
-echo "---------------------------------------" >> $log_file
-echo "$(date)" >> $log_file
 rsync -vha --copy-links --delete --exclude unlock  "$1" "$2" >> $log_file
 
 if [ $? -eq 0 ];
