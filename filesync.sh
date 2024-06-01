@@ -29,23 +29,22 @@ fi
 
 # Check for "zenity"
 
-zenity --help > /dev/null 2>&1
+# zenity --help > /dev/null 2>&1
 
-if [ $? -eq 127 ];
-   then
-       echo "zenity is missing, aborting." >> $log_file
-       echo "The zenity program is required to use this script."
-       exit 0
-fi
+# if [ $? -eq 127 ];
+#   then
+#       echo "zenity is missing, aborting." >> $log_file
+#       echo "The zenity program is required to use this script."
+#       exit 0
+# fi
 
 # Check for the "unlock" file on the far end
 
 ls "$2unlock" > /dev/null 2>&1
-
 if [ $? -eq 2 ];
    then
        echo "unlock file not detected at far end. Folder may need encryption key or unlock file has been explictly removed to prevent writes." >> $log_file
-       zenity --warning --text="unlock file not detected at far end. Folder may need encryption key or unlock file has been explictly removed to prevent writes." --display=:0.0
+#       zenity --warning --text="unlock file not detected at far end. Folder may need encryption key or unlock file has been explictly removed to prevent writes."
        exit 0
 fi
 
@@ -61,7 +60,6 @@ if [ $? -eq 0 ];
    else
        echo "Sync Failed" >> $log_file
        echo "Program failed, please see logs for details"
-       zenity --warning --text="Overnight job failed, please see logs" --display=:0.0
+#       zenity --warning --text="Overnight job failed, please see logs"
        exit 1
 fi
-
