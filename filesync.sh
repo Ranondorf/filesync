@@ -50,7 +50,9 @@ fi
 
 # Main bit of the code. Exlude is not necessary here as this is currently being called to backup up to the cloud (unlock is on the cloud side), instead of keeping both sides in sync.
 
-rsync -vha --copy-links --delete --exclude unlock  "$1" "$2" >> $log_file
+rsync -vha --copy-links --delete --exclude unlock  "$1" "$2" | grep -v "/$" >> $log_file
+
+echo "" >> $log_file
 
 if [ $? -eq 0 ];
    then
